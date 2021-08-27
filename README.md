@@ -1,12 +1,17 @@
 
-# Rail Sakhaviev initialize
+# Rail Sakhaviev
 
-## Terraform .gitignore file 
+## Описание terraform/.gitignore
 
-This file will ignore 
-1. Local .terraform directories
-2. .tfstate files
-3. Crash log files
-4. Exclude all .tfvars files, which are likely to contain sensitive data, such as password, private keys, and other secrets
-5. Ignore override files as they are usually used to override resources locally and so are not checked in
-6. Ignore CLI configuration files
+Этот файл будет игнорировать: 
+1. Рекурсивно все папки **.terraform** и их содержимое
+2. Все файлы с расширением *.tfstate или которые содержат в своем имени подстроку **.tfstate**
+3. Все файлы с названием **crash.log**
+4. Все файлы с расширением ***.tfvars**
+5. Все файлы с названием **override.tf** и **override.tf.json**
+6. Все файлы название которых заканчивается на **_override.tf** и **_override.tf.json**
+7. Все файлы с названием **.terraformrc** и **terraform.rc**
+
+
+
+
