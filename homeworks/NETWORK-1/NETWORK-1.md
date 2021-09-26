@@ -179,6 +179,20 @@ traceroute to 8.8.8.8 (8.8.8.8), 64 hops max, 52 byte packets
 
 ### 7. Какие DNS сервера отвечают за доменное имя dns.google? Какие A записи? Воспользуйтесь утилитой dig
 
+Команда dig для получения сведений об NS-записях:
+
+```commandline
+➜  ~ dig +trace dns.google
+...
+dns.google.		10800	IN	NS	ns3.zdns.google.
+dns.google.		10800	IN	NS	ns1.zdns.google.
+dns.google.		10800	IN	NS	ns4.zdns.google.
+dns.google.		10800	IN	NS	ns2.zdns.google.
+...
+```
+
+P.S.: часть ответа специально урезал.
+
 Команда dig для получения сведений об A-записях:
 
 ```commandline
