@@ -32,7 +32,7 @@ cat test.txt | grep . -c
 
 ### 3. Какой процесс с PID 1 является родителем для всех процессов в вашей виртуальной машине Ubuntu 20.04?
 
-Не уверен что я правилно отвечаю, но вроде как логично что это процесс **systemd**
+Не уверен что я правильно отвечаю, но вроде как логично что это процесс **systemd**
 
 Можно узнать через дерево всех процессов(**pstree**):
 
@@ -89,15 +89,35 @@ vagrant@vagrant:~$ ls: cannot access 'UNEXISTING_REPOSITORY': No such file or di
 
 ### 5. Получится ли одновременно передать команде файл на stdin и вывести ее stdout в другой файл? Приведите работающий пример.
 
-Я не успел разобаться с детально с темой потоков и данным вопросом =(
+```commandline
+vagrant@vagrant:~$ echo "test" > input.txt
+vagrant@vagrant:~$ ls
+input.txt
+vagrant@vagrant:~$ cat < input.txt > output.txt
+vagrant@vagrant:~$ cat output.txt
+test
+vagrant@vagrant:~$
+```
+
 
 ### 6. Получится ли находясь в графическом режиме, вывести данные из PTY в какой-либо из эмуляторов TTY? Сможете ли вы наблюдать выводимые данные?
 
-Я не успел разобаться с детально с темой потоков и данным вопросом =(
+Ну устный ответ: да. В графическом режиме у нас так же выделяется PTY и можно перенаправить вывод из одного терминала в другой.
 
-На лекции говорили что GUI не нужен будет для решения домашних заданий, у меня сейчас 
+Возможно я что-то путаю. Но в целом здесь есть рабочий пример того как это сделать: https://dev.to/napicella/comment/np73 
+
+
+> На лекции говорили что GUI не нужен будет для решения домашних заданий, у меня сейчас 
 убунту без графического режима.
 
+К сожалению, у меня сейчас нет возможности развернуть стенд с GUI Linux.
+
+Недопонимание какое-то странное возникает: Александр Крылов на лекции сказал что GUI вообще не понадобятся.
+
+https://netology.ru/profile/program/devsys-12/lessons/100767/lesson_items/501756 - посмотрите, пожалуйста, 
+ответ Александра на мой вопрос в конце лекции. Чтобы не искать таймкод: 1:06:35
+
+Я работал на GUI Linux в далеких 2010-2012 годах, мне они не нравятся, в отличие от работы с Linux по SSH.
 
 ### 7. Выполните команду bash 5>&1. К чему она приведет? Что будет, если вы выполните echo netology > /proc/$$/fd/5? Почему так происходит?
 Открывается новая сессия терминала и создается файловый дескриптор 5.
@@ -115,7 +135,19 @@ vagrant@vagrant:~$
 
 ### 8. Получится ли в качестве входного потока для pipe использовать только stderr команды, не потеряв при этом отображение stdout на pty? Напоминаем: по умолчанию через pipe передается только stdout команды слева от | на stdin команды справа. Это можно сделать, поменяв стандартные потоки местами через промежуточный новый дескриптор, который вы научились создавать в предыдущем вопросе.
 
-Я не успел разобаться с детально с темой потоков и данным вопросом =(
+Да, благодаря статье https://catonmat.net/bash-one-liners-explained-part-three кажется понял как это работает.
+
+Вот пример в pipe отображает только stderr от команды слева, но при этом мы не видим stdout от команды слева.
+
+```commandline
+vagrant@vagrant:~$ ls UNEXISTING_FOLDER | 3>&1 1>&2 2>&3
+ls: cannot access 'UNEXISTING_FOLDER': No such file or directory
+vagrant@vagrant:~$ ls /var/tmp/ | 3>&1 1>&2 2>&3
+vagrant@vagrant:~$ ls /var/tmp/
+systemd-private-65ddbae72f0e409abf5d99a0e4e56275-systemd-logind.service-WobFWi
+systemd-private-65ddbae72f0e409abf5d99a0e4e56275-systemd-resolved.service-yFUQBg
+vagrant@vagrant:~$
+```
 
 ### 9. Что выведет команда cat /proc/$$/environ? Как еще можно получить аналогичный по содержанию вывод?
 
@@ -152,15 +184,44 @@ PWD=/home/vagrant
 
 ### 11. Узнайте, какую наиболее старшую версию набора инструкций SSE поддерживает ваш процессор с помощью /proc/cpuinfo.
 
-Даже не знаю что такое наборы инструкции SSE. Вопрос под домашкой задавал, никто не ответил.
+Командой:
+```commandline
+vagrant@vagrant:~$ cat /proc/cpuinfo | grep flags
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx rdtscp lm constant_tsc rep_good nopl xtopology nonstop_tsc cpuid tsc_known_freq pni pclmulqdq ssse3 cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt aes xsave avx rdrand hypervisor lahf_lm abm 3dnowprefetch invpcid_single pti fsgsbase avx2 invpcid rdseed clflushopt md_clear flush_l1d arch_capabilities
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx rdtscp lm constant_tsc rep_good nopl xtopology nonstop_tsc cpuid tsc_known_freq pni pclmulqdq ssse3 cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt aes xsave avx rdrand hypervisor lahf_lm abm 3dnowprefetch invpcid_single pti fsgsbase avx2 invpcid rdseed clflushopt md_clear flush_l1d arch_capabilities
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx rdtscp lm constant_tsc rep_good nopl xtopology nonstop_tsc cpuid tsc_known_freq pni pclmulqdq ssse3 cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt aes xsave avx rdrand hypervisor lahf_lm abm 3dnowprefetch invpcid_single pti fsgsbase avx2 invpcid rdseed clflushopt md_clear flush_l1d arch_capabilities
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx rdtscp lm constant_tsc rep_good nopl xtopology nonstop_tsc cpuid tsc_known_freq pni pclmulqdq ssse3 cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt aes xsave avx rdrand hypervisor lahf_lm abm 3dnowprefetch invpcid_single pti fsgsbase avx2 invpcid rdseed clflushopt md_clear flush_l1d arch_capabilities
+```
+
+Для каждого ядра выдаст список поддерживаемых им инструкций.
+
+Ответ: **sse**, **sse2**
 
 ### 12. При открытии нового окна терминала и vagrant ssh создается новая сессия и выделяется pty. Это можно подтвердить командой tty, которая упоминалась в лекции 3.2. Однако:
 
-Нет вариантов.
+Ссылка на видео с примером подключения по ssh к **localhost**:
+https://disk.yandex.ru/i/VwI64qxRvTRYUg
+
+```commandline
+-t   Force pseudo-terminal allocation.  This can be used to execute arbitrary screen-based programs on a remote machine, which
+     can be very useful, e.g. when implementing menu services.  Multiple -t options force tty allocation, even if ssh has no lo‐
+     cal tty.
+```
+
 
 ### 13. Бывает, что есть необходимость переместить запущенный процесс из одной сессии в другую. Попробуйте сделать это, воспользовавшись reptyr. Например, так можно перенести в screen процесс, который вы запустили по ошибке в обычной SSH-сессии.
 
-Пробовал, все зависало на смерть на Ubuntu 20.04 TLS.
+> Пробовал, все зависало на смерть на Ubuntu 20.04 TLS.
+
+Сейчас разобрался, проблема в целом возникла из-за того что на MacOS у меня неправильно передавались 
+коды клавиш в терминал. 
+Специально для того чтобы **reptyr** протестировать поднял инстанс Ubuntu на Amazon.
+
+Ссылка на видео с примером использования утилиты:
+https://disk.yandex.com/i/p2rZTQzUNVvfMQ
+
+P.S.: у меня проблемы со screen и tmux утилитами, клавиатура MacOS по дефолту не дружит с ними. 
+Поэтому пример перехвата процесса сделан на команде **top**.
 
 ### 14. sudo echo string > /root/new_file не даст выполнить перенаправление под обычным пользователем, так как перенаправлением занимается процесс shell'а, который запущен без sudo под вашим пользователем. Для решения данной проблемы можно использовать конструкцию echo string | sudo tee /root/new_file. Узнайте что делает команда tee и почему в отличие от sudo echo команда с sudo tee будет работать.
 
@@ -171,7 +232,7 @@ vagrant@vagrant:~$ man tee
 tee - read from standard input and write to standard output and files
 ```
 
-Первый вариант не работает из-за того что bash запущен не под рутов, а sudo для echo не работает из-за того что это 
+Первый вариант не работает из-за того что bash запущен не под рутом, а sudo для echo не работает из-за того что это 
 shell builtin команда, а tee сама по себе и ее уровень доступа можно расширить через **sudo**.
 
 ```commandline
