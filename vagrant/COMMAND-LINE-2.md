@@ -140,13 +140,9 @@ vagrant@vagrant:~$
 Вот пример в pipe отображает только stderr от команды слева, но при этом мы не видим stdout от команды слева.
 
 ```commandline
-vagrant@vagrant:~$ ls UNEXISTING_FOLDER | 3>&1 1>&2 2>&3
+vagrant@vagrant:~$ ls UNEXISTING_FOLDER 3>&1 1>&2 2>&3 | cat > test.txt
+vagrant@vagrant:~$ cat test.txt
 ls: cannot access 'UNEXISTING_FOLDER': No such file or directory
-vagrant@vagrant:~$ ls /var/tmp/ | 3>&1 1>&2 2>&3
-vagrant@vagrant:~$ ls /var/tmp/
-systemd-private-65ddbae72f0e409abf5d99a0e4e56275-systemd-logind.service-WobFWi
-systemd-private-65ddbae72f0e409abf5d99a0e4e56275-systemd-resolved.service-yFUQBg
-vagrant@vagrant:~$
 ```
 
 ### 9. Что выведет команда cat /proc/$$/environ? Как еще можно получить аналогичный по содержанию вывод?
@@ -186,16 +182,19 @@ PWD=/home/vagrant
 
 Командой:
 ```commandline
-vagrant@vagrant:~$ cat /proc/cpuinfo | grep flags
+vagrant@vagrant:~$ cat /proc/cpuinfo | grep sse
 flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx rdtscp lm constant_tsc rep_good nopl xtopology nonstop_tsc cpuid tsc_known_freq pni pclmulqdq ssse3 cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt aes xsave avx rdrand hypervisor lahf_lm abm 3dnowprefetch invpcid_single pti fsgsbase avx2 invpcid rdseed clflushopt md_clear flush_l1d arch_capabilities
 flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx rdtscp lm constant_tsc rep_good nopl xtopology nonstop_tsc cpuid tsc_known_freq pni pclmulqdq ssse3 cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt aes xsave avx rdrand hypervisor lahf_lm abm 3dnowprefetch invpcid_single pti fsgsbase avx2 invpcid rdseed clflushopt md_clear flush_l1d arch_capabilities
 flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx rdtscp lm constant_tsc rep_good nopl xtopology nonstop_tsc cpuid tsc_known_freq pni pclmulqdq ssse3 cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt aes xsave avx rdrand hypervisor lahf_lm abm 3dnowprefetch invpcid_single pti fsgsbase avx2 invpcid rdseed clflushopt md_clear flush_l1d arch_capabilities
-flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx rdtscp lm constant_tsc rep_good nopl xtopology nonstop_tsc cpuid tsc_known_freq pni pclmulqdq ssse3 cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt aes xsave avx rdrand hypervisor lahf_lm abm 3dnowprefetch invpcid_single pti fsgsbase avx2 invpcid rdseed clflushopt md_clear flush_l1d arch_capabilities
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx rdtscp lm constant_tsc rep_good nopl xtopology nonstop_tsc cpuid tsc_known_freq pni pclmulqdq ssse3 cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt aes xsave avx rdrand hypervisor lahf_lm abm 3dnowprefetch invpcid_single pti fsgsbase avx2 invpcid rdseed clflushopt md_clear flush_l1d arch_capabilities```
 ```
 
 Для каждого ядра выдаст список поддерживаемых им инструкций.
 
-Ответ: **sse**, **sse2**
+Все версии: **sse**, **sse2**, **ssse3**, **sse4_1**, **sse4_2**
+
+Наиболее старшая, если самая последняя подразумевается: sse4_2
+Наиболее старшая, если самая первая подразумевается: sse
 
 ### 12. При открытии нового окна терминала и vagrant ssh создается новая сессия и выделяется pty. Это можно подтвердить командой tty, которая упоминалась в лекции 3.2. Однако:
 
