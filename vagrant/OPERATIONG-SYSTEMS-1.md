@@ -57,8 +57,10 @@ openat(AT_FDCWD, "/usr/share/misc/magic.mgc", O_RDONLY) = 3
 мы можем обнулить поток перенаправив на него **/dev/null**.
 
 ```commandline
-vagrant@vagrant:~$ cat /proc/5408/fd/3 > /tmp/test2
+vagrant@vagrant:~$ cat /dev/null > /proc/5408/fd/3
 ```
+
+5408 - PID процесса.
 
 ### 4. Занимают ли зомби-процессы какие-то ресурсы в ОС (CPU, RAM, IO)?
 
