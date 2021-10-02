@@ -50,7 +50,15 @@ openat(AT_FDCWD, "/usr/share/misc/magic.mgc", O_RDONLY) = 3
 > Основываясь на знаниях о перенаправлении потоков предложите способ обнуления открытого удаленного файла
 > (чтобы освободить место на файловой системе).
 
+Для этого нужно знать PID процесса, который пишет в файл.
+Правило хорошего тона при написании демонов создавать pid-файлы(.pid) при запуске.
 
+При удалении исходного файла и отсутствии возможности перезапустить или пересоздать файл,
+мы можем обнулить поток перенаправив на него **/dev/null**.
+
+```commandline
+vagrant@vagrant:~$ cat /proc/5408/fd/3 > /tmp/test2
+```
 
 ### 4. Занимают ли зомби-процессы какие-то ресурсы в ОС (CPU, RAM, IO)?
 
@@ -69,6 +77,52 @@ root@vagrant:~# dpkg -L bpfcc-tools | grep sbin/opensnoop
 
 На какие файлы вы увидели вызовы группы open за первую секунду работы утилиты? 
 Воспользуйтесь пакетом bpfcc-tools для Ubuntu 20.04.
+
+Вот список файлов(syscall open()) которые выдал трейс opensnoop-bpfcc в первые секунды работы:  
+
+```commandline
+root@vagrant:/home/vagrant# /usr/sbin/opensnoop-bpfcc
+PID    COMM               FD ERR PATH
+619    irqbalance          6   0 /proc/interrupts
+619    irqbalance          6   0 /proc/stat
+619    irqbalance          6   0 /proc/irq/20/smp_affinity
+619    irqbalance          6   0 /proc/irq/0/smp_affinity
+619    irqbalance          6   0 /proc/irq/1/smp_affinity
+619    irqbalance          6   0 /proc/irq/8/smp_affinity
+619    irqbalance          6   0 /proc/irq/12/smp_affinity
+619    irqbalance          6   0 /proc/irq/14/smp_affinity
+619    irqbalance          6   0 /proc/irq/15/smp_affinity
+808    vminfo              4   0 /var/run/utmp
+604    dbus-daemon        -1   2 /usr/local/share/dbus-1/system-services
+604    dbus-daemon        18   0 /usr/share/dbus-1/system-services
+604    dbus-daemon        -1   2 /lib/dbus-1/system-services
+604    dbus-daemon        18   0 /var/lib/snapd/dbus-1/system-services/
+808    vminfo              4   0 /var/run/utmp
+604    dbus-daemon        -1   2 /usr/local/share/dbus-1/system-services
+604    dbus-daemon        18   0 /usr/share/dbus-1/system-services
+604    dbus-daemon        -1   2 /lib/dbus-1/system-services
+604    dbus-daemon        18   0 /var/lib/snapd/dbus-1/system-services/
+619    irqbalance          6   0 /proc/interrupts
+619    irqbalance          6   0 /proc/stat
+619    irqbalance          6   0 /proc/irq/20/smp_affinity
+619    irqbalance          6   0 /proc/irq/0/smp_affinity
+619    irqbalance          6   0 /proc/irq/1/smp_affinity
+619    irqbalance          6   0 /proc/irq/8/smp_affinity
+619    irqbalance          6   0 /proc/irq/12/smp_affinity
+619    irqbalance          6   0 /proc/irq/14/smp_affinity
+619    irqbalance          6   0 /proc/irq/15/smp_affinity
+808    vminfo              4   0 /var/run/utmp
+604    dbus-daemon        -1   2 /usr/local/share/dbus-1/system-services
+604    dbus-daemon        18   0 /usr/share/dbus-1/system-services
+604    dbus-daemon        -1   2 /lib/dbus-1/system-services
+604    dbus-daemon        18   0 /var/lib/snapd/dbus-1/system-services/
+808    vminfo              4   0 /var/run/utmp
+604    dbus-daemon        -1   2 /usr/local/share/dbus-1/system-services
+604    dbus-daemon        18   0 /usr/share/dbus-1/system-services
+```
+
+А что именно требовалось в этом задании, кроме установки iovisor BCC? 
+Просто узнать что с помощью этой утилиты можно удобным способом отлаживать системный вызов open()?
 
 ### 6. Какой системный вызов использует uname -a? Приведите цитату из man по этому системному вызову, где описывается альтернативное местоположение в /proc, где можно узнать версию ядра и релиз ОС.
 
