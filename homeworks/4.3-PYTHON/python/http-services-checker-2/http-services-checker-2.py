@@ -11,7 +11,7 @@ def save_service_to_txt(filename, _services):
             f.write(f'{hostname} - {_services[hostname]}\n')
 
 
-def save_to_yml(filename, data):
+def save_to_yaml(filename, data):
     with open(filename, 'w') as f:
         f.write(yaml.dump(data, indent=4, explicit_start=True))
 
@@ -44,5 +44,5 @@ def check_services(_services):
 services = check_services(load_services_from_txt('services-list.txt'))
 
 save_service_to_txt('services-list.txt', services)
-save_to_yml('services-list.yml', services)
+save_to_yaml('services-list.yml', services)
 save_to_json('services-list.json', services)
