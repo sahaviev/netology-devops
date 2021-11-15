@@ -7,7 +7,7 @@ import subprocess
 import calendar
 import time
 
-ACCESS_TOKEN = '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'
+ACCESS_TOKEN = ''
 REPO_NAME = 'python-test'
 MASTER_BRANCH = 'master'
 
