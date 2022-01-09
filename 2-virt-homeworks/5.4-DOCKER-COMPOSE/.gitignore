@@ -1,1 +1,4 @@
 packer/centos-7-base.json
+terraform/variables.tf
+terraform/key.json
+terraform/.terraform.lock.hcl
