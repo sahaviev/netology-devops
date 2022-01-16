@@ -1,0 +1,4 @@
+github.com/UltiRequiem/lorelai v1.0.0 h1:69nhFq2E/i4v5EN1qL4L9tQUgWKDZeusggMAV5XpbhE=
+github.com/UltiRequiem/lorelai v1.0.0/go.mod h1:WMMC/G8UDxDcQMoy7BCU7V5oQQAyIvThmnli/dHbI5E=
+github.com/lib/pq v1.10.4 h1:SO9z7FRPzA03QhHKJrH5BXA6HU1rS4V2nIVrrNC1iYk=
+github.com/lib/pq v1.10.4/go.mod h1:AlVN5x4E4T544tWzH6hKfbfQvm3HdbOxrmggDNAPY9o=
