@@ -8,8 +8,10 @@ func main() {
 	fmt.Print("Enter a number: ")
 	var input float64
 	fmt.Scanf("%f", &input)
-
-	output := input * FeetsInMeter
-
+	output := MeterToFeets(input)
 	fmt.Println(output)
+}
+
+func MeterToFeets(input float64) float64 {
+ return input * FeetsInMeter
 }
