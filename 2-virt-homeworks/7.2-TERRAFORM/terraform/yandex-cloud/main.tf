@@ -1,7 +1,5 @@
 provider "yandex" {
   service_account_key_file = "key.json"
-  cloud_id = "${var.yandex_cloud_id}"
-  folder_id = "${var.yandex_folder_id}"
 }
 
 resource "yandex_compute_instance" "node01" {
@@ -14,13 +12,13 @@ resource "yandex_compute_instance" "node01" {
 
   boot_disk {
     initialize_params {
-      image_id = "fd87va5cc00gaq2f5qfb"
+      image_id = "fd83n3uou8m03iq9gavu"
     }
   }
 
   network_interface {
     subnet_id = yandex_vpc_subnet.default.id
-    nat       = true
+    nat = true
   }
 
   metadata = {
