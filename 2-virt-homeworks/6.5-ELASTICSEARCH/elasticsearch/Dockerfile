@@ -2,15 +2,15 @@ FROM centos:7
 
 MAINTAINER Rail Sakhaviev <sahaviev@gmail.com>
 
-ENV PATH=/usr/lib:/usr/lib/jvm/jre-11/bin:$PATH \
-    JAVA_HOME=/etc/elasticsearch-8.1.1/jdk/ \
-    ES_HOME=/etc/elasticsearch-8.1.1
-
 RUN yum install java-11-openjdk -y
 
-ADD https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-8.1.1-linux-x86_64.tar.gz /tmp/
-RUN tar -C /etc -xvzf /tmp/elasticsearch-8.1.1-linux-x86_64.tar.gz \
- && rm /tmp/elasticsearch-8.1.1-linux-x86_64.tar.gz
+ENV PATH=/usr/lib:/usr/lib/jvm/jre-11/bin:$PATH \
+    ES_JAVA_HOME=/usr/lib/jvm/java-11-openjdk-11.0.14.1.1-1.el7_9.x86_64 \
+    ES_HOME=/etc/elasticsearch-7.17.1
+
+ADD https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.17.1-linux-x86_64.tar.gz /tmp/
+RUN tar -C /etc -xvzf /tmp/elasticsearch-7.17.1-linux-x86_64.tar.gz \
+ && rm /tmp/elasticsearch-7.17.1-linux-x86_64.tar.gz
 
 COPY elasticsearch.yml ${ES_HOME}/config
 
@@ -28,4 +28,5 @@ EXPOSE 9200
 
 USER elasticsearch
 
-CMD ["/etc/elasticsearch-8.1.1/bin/elasticsearch"]
+CMD ["/usr/sbin/init"]
+CMD ["/etc/elasticsearch-7.17.1/bin/elasticsearch"]
