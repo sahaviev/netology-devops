@@ -1,5 +1,9 @@
 [nodes:children]
 manager
+exporters
 
 [manager]
 node01.netology.cloud ansible_host=
+
+[exporters]
+node02.netology.cloud ansible_host=
